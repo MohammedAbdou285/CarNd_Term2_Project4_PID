@@ -6,16 +6,42 @@ using namespace std;
 * TODO: Complete the PID class.
 */
 
-PID::PID() {}
+PID::PID() 
+{}
 
-PID::~PID() {}
+PID::~PID() 
+{}
 
-void PID::Init(double Kp, double Ki, double Kd) {
+void PID::Init(double Kp, double Ki, double Kd) 
+{
+    // Initialize PID Coefficients Errors
+    this->p_error = 0.0;
+    this->i_error = 0.0;
+    this->d_error = 0.0;
+
+    // Initialize PID Controller Coefficients
+    this->Kp = Kp;
+    this->Ki = Ki;
+    this->Kd = Kd;
 }
 
-void PID::UpdateError(double cte) {
+void PID::UpdateError(double cte) 
+{
+    // In this function we have the current cte 
+    d_error = cte - p_error;
+    p_error = cte;
+    i_error = i_error + cte;
+    
 }
 
-double PID::TotalError() {
+double PID::TotalError() 
+{
+    // Calculate the total PID error Compnents
+    double P_Component  = -Kp * p_error;
+    double I_Component  = -Ki * i_error;
+    double D_Component  = -Kd * d_error;
+    double PID_Components = P_Component + I_Component + D_Component;
+    
+    return PID_Components;
 }
 
