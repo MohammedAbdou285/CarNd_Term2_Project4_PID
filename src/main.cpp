@@ -63,7 +63,7 @@ int main()
           double angle = std::stod(j[1]["steering_angle"].get<std::string>());
           double steer_value;
           double throttle_value;
-          double target_speed = 45;
+          double target_speed = 50;
           /*
           * TODO: Calcuate steering value here, remember the steering value is
           * [-1, 1].
@@ -86,7 +86,7 @@ int main()
           // throttle pid controller 
           //pid_throttle.UpdateError(fabs(cte));
           pid_throttle.UpdateError(speed - target_speed);
-          throttle_value = 0.6 + pid_throttle.TotalError();
+          throttle_value = pid_throttle.TotalError();
 
           if (throttle_value > 1)
           {
