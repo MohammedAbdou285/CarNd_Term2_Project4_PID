@@ -35,13 +35,13 @@ int main()
   PID pid_steer;
   PID pid_throttle;
   // TODO: Initialize the pid variable.
-  double KP_steer = 0.1;
-  double KI_steer = 0.0015;
-  double KD_steer = 1.8;
+  double KP_steer = 0.09;
+  double KI_steer = 0.0014;
+  double KD_steer = 1.4;
 
-  double KP_throttle = 0.17;
-  double KI_throttle = 0.00001;
-  double KD_throttle = 0.00001;
+  double KP_throttle = 0.1;
+  double KI_throttle = 0.0;
+  double KD_throttle = 0.0;
 
   pid_steer.Init(KP_steer, KI_steer, KD_steer);
   pid_throttle.Init(KP_throttle, KI_throttle, KD_throttle);
@@ -63,7 +63,7 @@ int main()
           double angle = std::stod(j[1]["steering_angle"].get<std::string>());
           double steer_value;
           double throttle_value;
-          double target_speed = 65;
+          double target_speed = 45;
           /*
           * TODO: Calcuate steering value here, remember the steering value is
           * [-1, 1].
@@ -84,13 +84,17 @@ int main()
           }
           
           // throttle pid controller 
-          pid_throttle.UpdateError(fabs(cte));
-          //pid_throttle.UpdateError(target_speed - speed);
+          //pid_throttle.UpdateError(fabs(cte));
+          pid_throttle.UpdateError(speed - target_speed);
           throttle_value = 0.6 + pid_throttle.TotalError();
 
-          if (speed < 30 && throttle_value < 0.3)
+          if (throttle_value > 1)
           {
-              throttle_value = 0.3;
+              throttle_value = 1;
+          }
+          if (throttle_value < -1)
+          {
+              throttle_value = -1;
           }
 
           // DEBUG
