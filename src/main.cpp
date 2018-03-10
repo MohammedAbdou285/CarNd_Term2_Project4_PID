@@ -35,13 +35,13 @@ int main()
   PID pid_steer;
   PID pid_throttle;
   // TODO: Initialize the pid variable.
-  double KP_steer = 0.1350;
-  double KI_steer = 0.0002;
-  double KD_steer = 3.1;
+  double KP_steer = 0.1;
+  double KI_steer = 0.0015;
+  double KD_steer = 1.8;
 
-  double KP_throttle = 0.315;
-  double KI_throttle = 0.0;
-  double KD_throttle = 0.002;
+  double KP_throttle = 0.17;
+  double KI_throttle = 0.00001;
+  double KD_throttle = 0.00001;
 
   pid_steer.Init(KP_steer, KI_steer, KD_steer);
   pid_throttle.Init(KP_throttle, KI_throttle, KD_throttle);
@@ -60,9 +60,10 @@ int main()
           // j[1] is the data JSON object
           double cte = std::stod(j[1]["cte"].get<std::string>());
           double speed = std::stod(j[1]["speed"].get<std::string>());
-          //double angle = std::stod(j[1]["steering_angle"].get<std::string>());
+          double angle = std::stod(j[1]["steering_angle"].get<std::string>());
           double steer_value;
           double throttle_value;
+          double target_speed = 65;
           /*
           * TODO: Calcuate steering value here, remember the steering value is
           * [-1, 1].
@@ -77,19 +78,21 @@ int main()
           {
               steer_value = 1;
           }
-          if(steer_value < -1)
+          if (steer_value < -1)
           {
               steer_value = -1;
           }
           
-          // Check the trottle value to be from 
+          // throttle pid controller 
           pid_throttle.UpdateError(fabs(cte));
-          throttle_value = 0.8 + pid_throttle.TotalError();
+          //pid_throttle.UpdateError(target_speed - speed);
+          throttle_value = 0.6 + pid_throttle.TotalError();
 
           if (speed < 30 && throttle_value < 0.3)
           {
               throttle_value = 0.3;
           }
+
           // DEBUG
           std::cout << "CTE: " << cte << " Steering Value: " << steer_value << std::endl;
 

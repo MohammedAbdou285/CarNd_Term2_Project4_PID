@@ -7,19 +7,24 @@ using namespace std;
 */
 
 PID::PID() 
-{}
+{
+    // Initialize PID Coefficients Errors
+    p_error = 0;
+    i_error = 0;
+    d_error = 0;
+
+    // Initialize PID Controller Coefficients
+    Kp = 0;
+    Ki = 0;
+    Kd = 0;
+}
 
 PID::~PID() 
 {}
 
 void PID::Init(double Kp, double Ki, double Kd) 
 {
-    // Initialize PID Coefficients Errors
-    this->p_error = 0.0;
-    this->i_error = 0.0;
-    this->d_error = 0.0;
-
-    // Initialize PID Controller Coefficients
+    // Set PID COefficient values
     this->Kp = Kp;
     this->Ki = Ki;
     this->Kd = Kd;
