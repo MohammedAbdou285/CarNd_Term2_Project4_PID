@@ -3,6 +3,54 @@ Self-Driving Car Engineer Nanodegree Program
 
 ---
 
+## PID Controller Introduction
+PID Controller stands for Propotional-Integral and Differential Controller in which it can be defined as a feedback control loop. It is most commonly used in many applications related with control systems. It depends on error value which can be calculated by the difference between a desired setpoint value and variable measured process. The PID Controller applies its components (P, I and D) to control the whole process by: decrease the calculated error as most as possible, and achieve approximately the same setpoint for the variable measured.
+
+Inline-style: 
+![alt text](pid.jpg "PID Controller")
+
+In this Project, PID controller is applied on autonomous driving application. Udacity Simulator is responsible for calculating the error signal: difference between the actual car position on the road and the reference trajectory. This is why this error is named by Cross-Track Error (CTE). In addition to this error, we have current speed value. It is desired to design a PID controller to control the steering angle of the car.  
+
+## PID Components Effect
+
+##### The Propotional Component (P)
+It is the most important component in the controller as the most effectibe component on the steering angle. It is responsible for having an opposite effect of the CTE. This means that if the CTE is positive, the P component shoulf have a negative steering command, and vice versa.
+
+##### The Integral Component (I)
+This component will take the accumulated error (CTE) over the past time  into its consideration. It corrects systematic bias and constant deviation which can prevent the controller from reaching the center of the reference trajectory. 
+
+##### The Differential Component (D)
+This component is proportional to the rate of change of the error (CTE). It has a great effect on reducing the overshooting or the oscillations caused by the propotional component (P).
+
+
+## PID Controllers Project
+It was desired to control the steering angle of the car using the CTE. Actually I have created **Two PID Controllers**: the first one for steering by depending on the CTE from the simualtor, and the second one for throttle by depending on the Speed from the simulator. 
+
+The input to Steering angle PID controller is the CTE, and my aim is to reduce this CTE as possible, so I designed the PID Controller using manual tunning for its paramaters as follows:
+
+| Steering PID Controller  | Component Values  |
+|:-------------------------:|:-------------------------:|
+| P              |       0.09        |
+| I              |      0.0014       |
+| D              |        1.4        |
+
+The input to the throttle PID controller is the error of a desired speed and the speed calculated by the simulator, and my aim is to reach to this target speed as possible, so I designed the PID Controller using manual tunning for its paramters (taking into consideration achieve a higher speed target value) as follows:
+
+| Steering PID Controller  | Component Values  |
+|:-------------------------:|:-------------------------:|
+| **Target Speed**              |       **50**        |
+| P              |       0.1        |
+| I              |        0       |
+| D              |        0        |
+
+
+## Hyperparameters Tuning
+I have tuned the two PID Controllers manually:
+
+* Steering angle PID controller parameters are tuned by firstly tune the P-component, after that tune the D-component by slight increasing gradually in order to remove the whole overshoots or oscillations, and finally add small value for the integral and this value can be zero as it doesn't have a great effect on the car motion. This is due to, in this application, the steering drift is very small in the simulator.
+
+* Throttle PID Controller parameters are tuned by using only the P-Component as it will help in reaching to the desired or target speed value as fast as possible without the need of the other components either: I-Component or D-Component.
+
 ## Dependencies
 
 * cmake >= 3.5
