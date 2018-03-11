@@ -5,8 +5,7 @@ Self-Driving Car Engineer Nanodegree Program
 
 ## PID Controller Introduction
 PID Controller stands for Propotional-Integral and Differential Controller in which it can be defined as a feedback control loop. It is most commonly used in many applications related with control systems. It depends on error value which can be calculated by the difference between a desired setpoint value and variable measured process. The PID Controller applies its components (P, I and D) to control the whole process by: decrease the calculated error as most as possible, and achieve approximately the same setpoint for the variable measured.
-
-Inline-style: 
+ 
 ![alt text](pid.jpg "PID Controller")
 
 In this Project, PID controller is applied on autonomous driving application. Udacity Simulator is responsible for calculating the error signal: difference between the actual car position on the road and the reference trajectory. This is why this error is named by Cross-Track Error (CTE). In addition to this error, we have current speed value. It is desired to design a PID controller to control the steering angle of the car.  
